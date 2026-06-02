@@ -1,9 +1,21 @@
 package com.example.taskmanager.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tasks")
 public class Task {
+    @Id
+    @GeneratedValue
     private Integer id;
     private String title;
     private Boolean completed;
+
+    public Task(){
+    }
 
     public Task(Integer id, String title, Boolean completed) {
         this.id = id;
@@ -19,7 +31,7 @@ public class Task {
         return title;
     }
 
-    public Boolean isCompleted() {
+    public Boolean getCompleted() {
         return completed;
     }
 

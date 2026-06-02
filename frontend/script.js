@@ -37,7 +37,7 @@ async function apiRequest(url, method = "GET", body = null) {
 async function  createTask(taskTitle) {
     const task = {
         title: taskTitle,
-        completed: false
+        is_completed: false
     }
     const response = await apiRequest(API_URL, "POST", task);
     taskToAdd.value = "";
@@ -72,11 +72,11 @@ async function fetchAndRenderTasks() {
         const deleteButton = document.createElement("button");
         li.classList.add("task-item")
         span.classList.add("task-title");
-        if (task.completed) {
+        if (task.is_completed) {
             li.classList.add("completed");
         }
         li.dataset.id = task.id;
-        li.dataset.completed = task.completed;
+        li.dataset.completed = task.is_completed;
         span.textContent = task.title;
         li.appendChild(span);
         deleteButton.classList.add("delete-btn");
@@ -94,17 +94,19 @@ tasksList.addEventListener("click", async (e) => {
 
     const id = ti.dataset.id;
 
+    //delete task
     if (e.target.classList.contains("delete-btn")) {
         await apiRequest(`${API_URL}/${id}`, "DELETE");
         fetchAndRenderTasks();
         return;
     }
-
-    const completed = ti.dataset.completed === "true";
+    
+    //change completed
+    const is_completed = ti.dataset.completed === "true";
     const title = ti.querySelector(".task-title").textContent;
     const body = {
         title,
-        completed: !completed
+        is_completed: !is_completed
     }
     await apiRequest(`${API_URL}/${id}`, "PUT", body)
 
